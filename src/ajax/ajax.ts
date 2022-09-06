@@ -61,6 +61,7 @@ export function get(url: string, callback: Function, onError?: Function) {
             callback(data);
         })
         .catch(error => {
+            console.log(error);
             if (onError !== undefined)
                 onError(error)
         })

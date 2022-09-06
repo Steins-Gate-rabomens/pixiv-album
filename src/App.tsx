@@ -1,12 +1,9 @@
 import React from 'react';
-import './App.css';
-import Album from "./components/album";
+import AppRouter from "./router/router";
 
 function App() {
     return (
-        <div className="App">
-            <Album/>
-        </div>
+        <AppRouter/>
     );
 }
 

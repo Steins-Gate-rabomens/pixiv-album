@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import * as React from "react";
 import {useState} from "react";
-import {IllustInfo} from "./types";
-import {Box, CardActionArea, Chip, CircularProgress, Container, Stack} from "@mui/material";
+import {IllustInfo} from "../types/search";
+import {Box, CardActionArea, Chip, CircularProgress, Container} from "@mui/material";
 import '../css/illust.css'
 
 // example:
@@ -51,7 +51,7 @@ export default function Illustration(props: Props) {
     const [loaded, setLoaded] = useState(false);
     return (
         <Card sx={{display: 'flex', flexDirection: 'column'}}>
-            <CardActionArea href={"https://okabebot-pixiv.herokuapp.com/" + props.info.id} target="_blank">
+            <CardActionArea href={"/" + props.info.id}>
                 <CardMedia
                     component="img"
                     image={"https://okabebot-pixiv.herokuapp.com/" + props.info.id + "?t=regular"}
@@ -79,9 +79,6 @@ export default function Illustration(props: Props) {
                     {props.info.tags != undefined && props.info.tags.map((tag) =>
                         <Chip label={tag}/>
                     )}
-                    {/*<Typography>*/}
-                    {/*    {props.info.description}*/}
-                    {/*</Typography>*/}
                 </CardContent>
             </CardActionArea>
         </Card>

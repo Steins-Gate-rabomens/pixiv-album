@@ -1,39 +1,20 @@
 import * as React from 'react';
+import {useState} from 'react';
 import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
 import PaletteIcon from '@mui/icons-material/Palette';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import AlbumInput from "./input";
 import Illustration from "./illustration";
-import {IllustInfo} from "./types";
-import {useState} from "react";
-import {searchIllust} from "../service/search";
+import {IllustInfo} from "../types/search";
+import {searchIllust} from "../service/api";
 import {Pagination} from "@mui/material";
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://github.com/Steins-Gate-rabomens/pixiv-album">
-                pixiv-album@github
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import {Copyright} from "./copyright";
 
 const theme = createTheme();
 
@@ -59,7 +40,6 @@ export default function Album() {
                 </Toolbar>
             </AppBar>
             <main>
-                {/* Hero unit */}
                 <Box
                     sx={{
                         bgcolor: 'background.paper',
@@ -71,7 +51,7 @@ export default function Album() {
                         <AlbumInput onSearch={search}/>
                     </Container>
                 </Box>
-                <Container sx={{py: 8}} maxWidth="lg">
+                <Container sx={{py: 8}}>
                     {/* End hero unit */}
                     <Grid container spacing={4}>
                         {illusts.map((info) => (
@@ -82,7 +62,7 @@ export default function Album() {
                     </Grid>
                 </Container>
                 {
-                    page > 0 && <Container sx={{py: 8}} maxWidth="lg">
+                    page > 0 && <Container sx={{py: 8}}>
                         <Pagination page={page} count={page + 1} onChange={(_, value) => {
                             setPage(value);
                             searchIllust(currentInput, value, setIllusts);

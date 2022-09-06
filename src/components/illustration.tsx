@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import * as React from "react";
 import {IllustInfo} from "./types";
+import {CardActionArea} from "@mui/material";
 
 // example:
 // {
@@ -47,28 +48,24 @@ interface Props {
 }
 
 export default function Illustration(props: Props) {
+
     return (
-        <Card sx={{height: '100%', display: 'flex', flexDirection: 'column'}}>
-            <CardMedia
-                component="img"
-                sx={{
-                    // 16:9
-                    pt: '56.25%',
-                }}
-                image={props.info.url}
-                alt="暂时无法加载"
-            />
-            <CardContent sx={{flexGrow: 1}}>
-                <Typography gutterBottom variant="h5" component="h2">
-                    {props.info.title}
-                </Typography>
-                <Typography>
-                    {props.info.description}
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button size="small">查看</Button>
-            </CardActions>
+        <Card sx={{display: 'flex', flexDirection: 'column'}}>
+            <CardActionArea href={"https://okabebot-pixiv.herokuapp.com/" + props.info.id} target="_blank">
+                <CardMedia
+                    component="img"
+                    image={"https://okabebot-pixiv.herokuapp.com/" + props.info.id + "?t=regular"}
+                    alt="暂时无法加载"
+                />
+                <CardContent sx={{flexGrow: 1}}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                        {props.info.title}
+                    </Typography>
+                    <Typography>
+                        {props.info.description}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
         </Card>
     )
 }

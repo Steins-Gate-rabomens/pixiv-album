@@ -18,6 +18,9 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import AlbumInput from "./input";
 import Illustration from "./illustration";
 import {IllustInfo} from "./types";
+import {useState} from "react";
+import {searchIllust} from "../service/search";
+import {Pagination} from "@mui/material";
 
 function Copyright() {
     return (
@@ -32,35 +35,18 @@ function Copyright() {
     );
 }
 
-const exampleIllust = {
-    alt: "",
-    createDate: "",
-    description: "",
-    height: 0,
-    id: "101028348",
-    illustType: 0,
-    isBookmarkable: false,
-    isMasked: false,
-    isUnlisted: false,
-    pageCount: 0,
-    profileImageUrl: "",
-    restrict: 0,
-    sl: 0,
-    tags: [],
-    title: "雷",
-    updateDate: "",
-    url: "https://i.pximg.net/c/250x250_80_a2/img-master/img/2022/09/06/00/59/18/101028348_p0_square1200.jpg",
-    userId: "",
-    userName: "",
-    width: 0,
-    xRestrict: 0
-} as IllustInfo;
-
-const illusts = [exampleIllust, exampleIllust, exampleIllust];
-
 const theme = createTheme();
 
 export default function Album() {
+    const [illusts, setIllusts] = useState(Array<IllustInfo>);
+    const [page, setPage] = useState(0);
+    const [currentInput, setCurrentInput] = useState("");
+    const search = (keyword: string) => {
+        searchIllust(keyword, 1, setIllusts);
+        setPage(1);
+        setCurrentInput(keyword);
+    };
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
@@ -82,19 +68,28 @@ export default function Album() {
                     }}
                 >
                     <Container maxWidth="sm">
-                        <AlbumInput/>
+                        <AlbumInput onSearch={search}/>
                     </Container>
                 </Box>
-                <Container sx={{py: 8}} maxWidth="md">
+                <Container sx={{py: 8}} maxWidth="lg">
                     {/* End hero unit */}
                     <Grid container spacing={4}>
-                        {illusts.map((info, index) => (
-                            <Grid item key={index} xs={12} sm={6} md={4}>
+                        {illusts.map((info) => (
+                            <Grid item key={info.id} xs={12} sm={6} md={3}>
                                 <Illustration info={info}/>
                             </Grid>
                         ))}
                     </Grid>
                 </Container>
+                {
+                    page > 0 ?
+                        <Container sx={{py: 8}} maxWidth="lg">
+                            <Pagination page={page} count={page + 1} onChange={(_, value) => {
+                                setPage(value);
+                                searchIllust(currentInput, value, setIllusts);
+                            }}/>
+                        </Container> : null
+                }
             </main>
             {/* Footer */}
             <Box sx={{bgcolor: 'background.paper', p: 6}} component="footer">

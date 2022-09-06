@@ -82,13 +82,12 @@ export default function Album() {
                     </Grid>
                 </Container>
                 {
-                    page > 0 ?
-                        <Container sx={{py: 8}} maxWidth="lg">
-                            <Pagination page={page} count={page + 1} onChange={(_, value) => {
-                                setPage(value);
-                                searchIllust(currentInput, value, setIllusts);
-                            }}/>
-                        </Container> : null
+                    page > 0 && <Container sx={{py: 8}} maxWidth="lg">
+                        <Pagination page={page} count={page + 1} onChange={(_, value) => {
+                            setPage(value);
+                            searchIllust(currentInput, value, setIllusts);
+                        }}/>
+                    </Container>
                 }
             </main>
             {/* Footer */}

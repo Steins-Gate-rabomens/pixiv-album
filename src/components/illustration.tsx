@@ -1,12 +1,12 @@
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import * as React from "react";
+import {useState} from "react";
 import {IllustInfo} from "./types";
-import {CardActionArea} from "@mui/material";
+import {Box, CardActionArea, Chip, CircularProgress, Container, Stack} from "@mui/material";
+import '../css/illust.css'
 
 // example:
 // {
@@ -48,22 +48,40 @@ interface Props {
 }
 
 export default function Illustration(props: Props) {
-
+    const [loaded, setLoaded] = useState(false);
     return (
         <Card sx={{display: 'flex', flexDirection: 'column'}}>
             <CardActionArea href={"https://okabebot-pixiv.herokuapp.com/" + props.info.id} target="_blank">
                 <CardMedia
                     component="img"
                     image={"https://okabebot-pixiv.herokuapp.com/" + props.info.id + "?t=regular"}
-                    alt="暂时无法加载"
+                    onLoad={(e) => {
+                        setLoaded(true);
+                    }}
+                    alt=""
+                    className={`${!loaded && "height-0"}`}
                 />
+                {!loaded && <Box sx={{display: 'flex'}}>
+                    <Container>
+                        <CircularProgress/>
+                    </Container>
+                </Box>}
                 <CardContent sx={{flexGrow: 1}}>
                     <Typography gutterBottom variant="h5" component="h2">
                         {props.info.title}
                     </Typography>
-                    <Typography>
-                        {props.info.description}
+                    <Typography gutterBottom>
+                        画师：{props.info.userName}
                     </Typography>
+                    <Typography gutterBottom>
+                        {(new Date(props.info.createDate)).toDateString()}
+                    </Typography>
+                    {props.info.tags != undefined && props.info.tags.map((tag) =>
+                        <Chip label={tag}/>
+                    )}
+                    {/*<Typography>*/}
+                    {/*    {props.info.description}*/}
+                    {/*</Typography>*/}
                 </CardContent>
             </CardActionArea>
         </Card>

@@ -1,5 +1,5 @@
 # pixiv-album
-Pixiv 相册，国内可访问，基于 [a simple reverse proxy](https://github.com/Steins-Gate-rabomens/go-pixiv-proxy), 通过 `cloudflare` 部署.
+Pixiv 相册，国内可访问，基于 [go-pixiv-proxy](https://github.com/Steins-Gate-rabomens/go-pixiv-proxy), 通过 `cloudflare` 部署.
 
 ![](images/cloudflare.png)
 

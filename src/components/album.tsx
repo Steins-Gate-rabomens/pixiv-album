@@ -3,18 +3,17 @@ import {useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import PaletteIcon from '@mui/icons-material/Palette';
 import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import AlbumInput from "./input";
-import Illustration from "./illustration";
 import {IllustInfo} from "../types/search";
 import {searchIllust} from "../service/api";
 import {Pagination} from "@mui/material";
 import {Copyright} from "./copyright";
+import Waterfall from "./wallterfall";
 
 const theme = createTheme();
 
@@ -52,14 +51,7 @@ export default function Album() {
                     </Container>
                 </Box>
                 <Container sx={{py: 8}}>
-                    {/* End hero unit */}
-                    <Grid container spacing={4}>
-                        {illusts.map((info) => (
-                            <Grid item key={info.id} xs={12} sm={6} md={3}>
-                                <Illustration info={info}/>
-                            </Grid>
-                        ))}
-                    </Grid>
+                    <Waterfall illustInfos={illusts}/>
                 </Container>
                 {
                     page > 0 && <Container sx={{py: 8}}>
@@ -70,7 +62,6 @@ export default function Album() {
                     </Container>
                 }
             </main>
-            {/* Footer */}
             <Box sx={{bgcolor: 'background.paper', p: 6}} component="footer">
                 <Typography
                     variant="subtitle1"

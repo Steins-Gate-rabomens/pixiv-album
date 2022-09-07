@@ -20,10 +20,6 @@ export default function IllustBrowser(props: Props) {
             <Grid>
                 <Container
                     component="img"
-                    sx={{
-                        // maxHeight: "md",
-                        // maxWidth: "md"
-                    }}
                     alt=""
                     className={`${!loaded && "height-0"}`}
                     src={`https://okabebot-pixiv.herokuapp.com/${props.info.id}/${idx}`}

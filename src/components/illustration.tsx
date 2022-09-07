@@ -3,7 +3,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {IllustInfo} from "../types/search";
 import {Box, CardActionArea, Chip, CircularProgress, Container} from "@mui/material";
 import '../css/illust.css'
@@ -48,14 +48,20 @@ interface Props {
 }
 
 export default function Illustration(props: Props) {
+    const [info, setInfo] = useState(props.info);
+    useEffect(() => {
+        setInfo(props.info);
+        setLoaded(false);
+    }, [props.info]);
+
     const [loaded, setLoaded] = useState(false);
     return (
         <Card sx={{display: 'flex', flexDirection: 'column'}}>
-            <CardActionArea href={"/" + props.info.id}>
+            <CardActionArea href={"/" + info.id}>
                 <CardMedia
                     component="img"
-                    image={"https://okabebot-pixiv.herokuapp.com/" + props.info.id + "?t=regular"}
-                    onLoad={(e) => {
+                    image={"https://okabebot-pixiv.herokuapp.com/" + info.id + "?t=regular"}
+                    onLoad={() => {
                         setLoaded(true);
                     }}
                     alt=""
@@ -68,15 +74,15 @@ export default function Illustration(props: Props) {
                 </Box>}
                 <CardContent sx={{flexGrow: 1}}>
                     <Typography gutterBottom variant="h5" component="h2">
-                        {props.info.title}
+                        {info.title}
                     </Typography>
                     <Typography gutterBottom>
-                        画师：{props.info.userName}
+                        画师：{info.userName}
                     </Typography>
                     <Typography gutterBottom>
-                        {(new Date(props.info.createDate)).toDateString()}
+                        {(new Date(info.createDate)).toDateString()}
                     </Typography>
-                    {props.info.tags != undefined && props.info.tags.map((tag) =>
+                    {info.tags != undefined && info.tags.map((tag) =>
                         <Chip label={tag}/>
                     )}
                 </CardContent>

@@ -5,8 +5,9 @@ import Card from "@mui/material/Card";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {IllustInfo} from "../types/search";
-import {Box, CardActionArea, Chip, CircularProgress, Container} from "@mui/material";
+import {Avatar, Box, CardActionArea, Chip, CircularProgress, Container, Stack} from "@mui/material";
 import '../css/illust.css'
+import {toCoverProxyUrl} from "../service/utils";
 
 // example:
 // {
@@ -60,7 +61,7 @@ export default function Illustration(props: Props) {
             <CardActionArea href={"/" + info.id}>
                 <CardMedia
                     component="img"
-                    image={"https://okabebot-pixiv.herokuapp.com/" + info.id + "?t=regular"}
+                    image={toCoverProxyUrl(info.url)}
                     onLoad={() => {
                         setLoaded(true);
                     }}
@@ -77,11 +78,14 @@ export default function Illustration(props: Props) {
                         {info.title}
                     </Typography>
                     <Typography gutterBottom>
-                        画师：{info.userName}
+                        <Stack direction="row" spacing={1} alignItems="center">
+                            <Avatar alt={info.userName} src={toCoverProxyUrl(info.profileImageUrl)} />
+                            <p>{info.userName}</p>
+                        </Stack>
                     </Typography>
-                    <Typography gutterBottom>
-                        {(new Date(info.createDate)).toDateString()}
-                    </Typography>
+                    {/*<Typography gutterBottom>*/}
+                    {/*    {(new Date(info.createDate)).toDateString()}*/}
+                    {/*</Typography>*/}
                     {info.tags != undefined && info.tags.map((tag) =>
                         <Chip label={tag}/>
                     )}

@@ -5,9 +5,11 @@ import Card from "@mui/material/Card";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {IllustInfo} from "../types/search";
-import {Avatar, Box, CardActionArea, Chip, CircularProgress, Container, Stack} from "@mui/material";
+import {Avatar, CardActionArea, Chip, Stack} from "@mui/material";
 import '../css/illust.css'
-import {toCoverProxyUrl} from "../service/utils";
+import {toCoverProxyUrl, toImgProxyUrl, TYPE_REGULAR} from "../service/utils";
+import axios from "axios";
+import {PercentCircularProgress} from "./progress";
 
 // example:
 // {
@@ -50,36 +52,50 @@ interface Props {
 
 export default function Illustration(props: Props) {
     const [info, setInfo] = useState(props.info);
+    const [uri, setUri] = useState("");
+    const [progressPercent, setProgressPercent] = useState(0);
     useEffect(() => {
         setInfo(props.info);
         setLoaded(false);
+        axios.get(toImgProxyUrl(props.info.id, TYPE_REGULAR), {
+            responseType: "blob",
+            onDownloadProgress: (event: ProgressEvent) => {
+                if (event.lengthComputable) {
+                    let percent = Math.floor(event.loaded / event.total * 100);
+                    setProgressPercent(percent);
+                }
+        },
+        }).then((response) => {
+            let uri = URL.createObjectURL(response.data);
+            setUri(uri);
+            setLoaded(true);
+        }).catch((error) => {
+            console.log(error);
+        })
     }, [props.info]);
 
     const [loaded, setLoaded] = useState(false);
     return (
         <Card sx={{display: 'flex', flexDirection: 'column'}}>
-            <CardActionArea href={"/" + info.id}>
-                <CardMedia
+            <CardActionArea href={"/illust/" + info.id}>
+                {loaded && <CardMedia
                     component="img"
-                    image={toCoverProxyUrl(info.url)}
+                    // image={toCoverProxyUrl(info.url)}
+                    image={uri}
                     onLoad={() => {
                         setLoaded(true);
                     }}
                     alt=""
                     className={`${!loaded && "height-0"}`}
-                />
-                {!loaded && <Box sx={{display: 'flex'}}>
-                    <Container>
-                        <CircularProgress/>
-                    </Container>
-                </Box>}
+                />}
+                {!loaded && <PercentCircularProgress value={progressPercent}/>}
                 <CardContent sx={{flexGrow: 1}}>
                     <Typography gutterBottom variant="h5" component="h2">
                         {info.title}
                     </Typography>
                     <Typography gutterBottom>
                         <Stack direction="row" spacing={1} alignItems="center">
-                            <Avatar alt={info.userName} src={toCoverProxyUrl(info.profileImageUrl)} />
+                            <Avatar alt={info.userName} src={toCoverProxyUrl(info.profileImageUrl)}/>
                             <p>{info.userName}</p>
                         </Stack>
                     </Typography>

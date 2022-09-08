@@ -1,12 +1,12 @@
 import {Body} from "../types/illust";
-import React, {useState} from "react";
-import {Box, Button, Container, Grid, LinearProgress, Link, Stack} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {Button, Container, Grid, Link, Stack} from "@mui/material";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import HomeIcon from '@mui/icons-material/Home';
-import '../css/illust.css'
 import {toImgProxyUrl, TYPE_ORIGINAL} from "../service/utils";
-import {LinearIndeterminate} from "./progressbar";
+import {LinearWithValueLabel} from "./progress";
+import axios from "axios";
 
 interface Props {
     info: Body
@@ -14,21 +14,37 @@ interface Props {
 
 export default function IllustBrowser(props: Props) {
     const [idx, setIdx] = useState(0);
+    const [uri, setUri] = useState("");
     const [loaded, setLoaded] = useState(false);
+    const [progressPercent, setProgressPercent] = useState(0);
     const maxIdx = props.info.pageCount - 1;
+
+    useEffect(() => {
+        axios.get(toImgProxyUrl(props.info.id, TYPE_ORIGINAL, idx), {
+            responseType: "blob",
+            onDownloadProgress: (event: ProgressEvent) => {
+                if (event.lengthComputable) {
+                    setProgressPercent(Math.ceil(event.loaded / event.total * 100));
+                }
+            },
+        }).then((response) => {
+            let uri = URL.createObjectURL(response.data);
+            setUri(uri);
+            setLoaded(true);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }, [props.info]);
 
     const browser = () => {
         return (
-            <Grid className={`${!loaded && "height-0"}`}>
+            <Grid>
                 <Grid>
                     <Container
                         component="img"
                         alt=""
                         className={`${!loaded && "height-0"}`}
-                        src={toImgProxyUrl(props.info.id, TYPE_ORIGINAL, idx)}
-                        onLoad={() => {
-                            setLoaded(true);
-                        }}>
+                        src={uri}>
                     </Container>
                 </Grid>
                 <Grid sx={{py: "15px"}}>
@@ -60,8 +76,8 @@ export default function IllustBrowser(props: Props) {
     const progress = () => {
         return (
             <Grid container justifyContent="center" alignItems="center">
-                <Grid item xs={12} sm={6} md={3} sx={{background: "yellow"}}>
-                    <LinearIndeterminate/>
+                <Grid item xs={12} sm={6} md={3}>
+                    <LinearWithValueLabel progress={progressPercent}/>
                 </Grid>
             </Grid>
         )
@@ -69,7 +85,7 @@ export default function IllustBrowser(props: Props) {
 
     return (
         <>
-            {browser()}
+            {loaded && browser()}
             {!loaded && progress()}
         </>
     )

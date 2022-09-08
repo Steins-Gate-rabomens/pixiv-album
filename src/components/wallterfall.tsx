@@ -22,9 +22,7 @@ export default function Waterfall(props: Props) {
         }
         let heights = [0, 0, 0];
         illusts.map((illust) => {
-            console.log(illust.height, illust.width);
-            let thisHeight = (illust.height / illust.width) * 256;
-            console.log(heights);
+            let thisHeight = illust.height / illust.width * 256;
             if (isNaN(thisHeight)) {
                 return;
             }
@@ -38,7 +36,7 @@ export default function Waterfall(props: Props) {
             }
             heights[minIdx] += thisHeight;
             illustCols[minIdx].push(<Illustration info={illust}/>);
-            console.log("push: %s", illust.title);
+            // console.log("push: %s", illust.title);
         });
 
         return (

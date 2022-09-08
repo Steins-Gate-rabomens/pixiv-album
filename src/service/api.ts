@@ -3,12 +3,8 @@ import {get} from "../ajax/ajax";
 import {IllustFullInfoResponse, Body} from "../types/illust";
 
 export function searchIllust(keyword: string, page: number, callback: (infos: IllustInfo[]) => void) {
-    console.log(page);
-    console.log(keyword);
     get(`https://okabebot-pixiv.herokuapp.com/artworks/${keyword}?p=${page}`, (response: SearchIllustResponse) => {
-        console.log(response);
         callback(response.body.illustManga.data);
-        console.log(response.body.illustManga.data);
     });
 }
 

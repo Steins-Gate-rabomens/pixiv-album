@@ -1,8 +1,8 @@
-import Album from "../components/album";
 import React from "react";
+import {Navigate} from "react-router-dom";
 
 export function HomeView() {
     return (
-        <Album/>
+        <Navigate to={"/search/artworks"}/>
     )
 }

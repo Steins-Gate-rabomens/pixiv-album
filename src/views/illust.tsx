@@ -9,15 +9,15 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import {Copyright} from "../components/copyright";
 import {getIllustInfo} from "../service/api";
-import {Body} from "../types/illust";
 import Container from "@mui/material/Container";
 import IllustBrowser from "../components/illustBrowser";
+import {Body} from "../types/illust";
 
 const theme = createTheme();
 
 export function IllustView() {
     const {pid} = useParams();
-    const [illustInfo, setIllustInfo] = useState({} as Body);
+    const [illustInfo, setIllustInfo] = useState<Body | null>(null);
 
     useEffect(() => {
         if (pid !== undefined) {
@@ -47,7 +47,7 @@ export function IllustView() {
                     }}
                 >
                     <Container sx={{py: 8}}>
-                        <IllustBrowser info={illustInfo}/>
+                        {illustInfo !== null && <IllustBrowser info={illustInfo}/>}
                     </Container>
                 </Box>
             </main>

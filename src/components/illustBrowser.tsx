@@ -19,8 +19,8 @@ export default function IllustBrowser(props: Props) {
     const [progressPercent, setProgressPercent] = useState(0);
     const maxIdx = props.info.pageCount - 1;
 
-    useEffect(() => {
-        axios.get(toImgProxyUrl(props.info.id, TYPE_ORIGINAL, idx), {
+    const loadIllust = (page: number) => {
+        axios.get(toImgProxyUrl(props.info.id, TYPE_ORIGINAL, page), {
             responseType: "blob",
             onDownloadProgress: (event: ProgressEvent) => {
                 if (event.lengthComputable) {
@@ -33,7 +33,11 @@ export default function IllustBrowser(props: Props) {
             setLoaded(true);
         }).catch((error) => {
             console.log(error);
-        })
+        });
+    };
+
+    useEffect(() => {
+        loadIllust(0);
     }, [props.info]);
 
     const browser = () => {
@@ -53,6 +57,8 @@ export default function IllustBrowser(props: Props) {
                                 onClick={() => {
                                     setIdx(idx - 1);
                                     setLoaded(false);
+                                    setProgressPercent(0);
+                                    loadIllust(idx -1);
                                 }}>
                             前一张
                         </Button>
@@ -65,6 +71,8 @@ export default function IllustBrowser(props: Props) {
                                 onClick={() => {
                                     setIdx(idx + 1);
                                     setLoaded(false);
+                                    setProgressPercent(0);
+                                    loadIllust(idx + 1);
                                 }}>
                             后一张
                         </Button>

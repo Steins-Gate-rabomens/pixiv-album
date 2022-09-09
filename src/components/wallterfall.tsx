@@ -35,20 +35,23 @@ export default function Waterfall(props: Props) {
                 }
             }
             heights[minIdx] += thisHeight;
-            illustCols[minIdx].push(<Illustration info={illust}/>);
-            // console.log("push: %s", illust.title);
+            illustCols[minIdx].push(
+                <Grid item>
+                    <Illustration info={illust}/>
+                </Grid>
+            );
         });
 
         return (
-            <Stack direction={"row"} spacing={4}>
+            <Grid container direction="row" spacing={2} justifyContent="space-between">
                 {illustCols.map((col) =>
-                    <Grid item md>
-                        <Stack direction={"column"} spacing={4}>
+                    <Grid item xs={12} sm={4} md={4} spacing={2}>
+                        <Grid container direction="column" spacing={2}>
                             {col}
-                        </Stack>
+                        </Grid>
                     </Grid>
                 )}
-            </Stack>
+            </Grid>
         )
     };
 

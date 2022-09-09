@@ -1,5 +1,5 @@
 import React from "react";
-import {Routes, Route, BrowserRouter, Navigate} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {HomeView} from "../views/home";
 import {IllustView} from "../views/illust";
 import {SearchView} from "../views/search";

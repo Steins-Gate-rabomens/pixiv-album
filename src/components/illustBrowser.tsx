@@ -1,6 +1,6 @@
 import {Body} from "../types/illust";
 import React, {useEffect, useState} from "react";
-import {Button, Container, Grid, Link, Stack} from "@mui/material";
+import {Box, Button, Container, Grid, Link, Stack} from "@mui/material";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import HomeIcon from '@mui/icons-material/Home';
@@ -42,41 +42,43 @@ export default function IllustBrowser(props: Props) {
 
     const browser = () => {
         return (
-            <Grid>
-                <Grid>
-                    <Container
+            <Grid container direction={"row"} justifyContent="center" alignItems="center">
+                <Grid item>
+                    <Box
                         component="img"
                         alt=""
+                        sx={{
+                            width: "100%",
+                            height: "100%"
+                        }}
                         className={`${!loaded && "height-0"}`}
                         src={uri}>
-                    </Container>
+                    </Box>
                 </Grid>
-                <Grid sx={{py: "15px"}}>
-                    <Stack justifyContent="space-between" alignItems="center" direction="row">
-                        <Button variant="outlined" startIcon={<ArrowBackIosIcon/>} disabled={idx === 0}
-                                onClick={() => {
-                                    setIdx(idx - 1);
-                                    setLoaded(false);
-                                    setProgressPercent(0);
-                                    loadIllust(idx -1);
-                                }}>
-                            前一张
+                <Grid container justifyContent="space-between" alignItems="center" direction="row">
+                    <Button variant="outlined" startIcon={<ArrowBackIosIcon/>} disabled={idx === 0}
+                            onClick={() => {
+                                setIdx(idx - 1);
+                                setLoaded(false);
+                                setProgressPercent(0);
+                                loadIllust(idx - 1);
+                            }}>
+                        前一张
+                    </Button>
+                    <Link href="/">
+                        <Button variant="outlined" startIcon={<HomeIcon/>}>
+                            返回主页
                         </Button>
-                        <Link href="/">
-                            <Button variant="outlined" startIcon={<HomeIcon/>}>
-                                返回主页
-                            </Button>
-                        </Link>
-                        <Button variant="outlined" startIcon={<ArrowForwardIosIcon/>} disabled={idx === maxIdx}
-                                onClick={() => {
-                                    setIdx(idx + 1);
-                                    setLoaded(false);
-                                    setProgressPercent(0);
-                                    loadIllust(idx + 1);
-                                }}>
-                            后一张
-                        </Button>
-                    </Stack>
+                    </Link>
+                    <Button variant="outlined" startIcon={<ArrowForwardIosIcon/>} disabled={idx === maxIdx}
+                            onClick={() => {
+                                setIdx(idx + 1);
+                                setLoaded(false);
+                                setProgressPercent(0);
+                                loadIllust(idx + 1);
+                            }}>
+                        后一张
+                    </Button>
                 </Grid>
             </Grid>
         )
@@ -92,9 +94,9 @@ export default function IllustBrowser(props: Props) {
     };
 
     return (
-        <>
+        <div>
             {loaded && browser()}
             {!loaded && progress()}
-        </>
+        </div>
     )
 }

@@ -64,7 +64,7 @@ export default function Illustration(props: Props) {
                     let percent = Math.floor(event.loaded / event.total * 100);
                     setProgressPercent(percent);
                 }
-        },
+            },
         }).then((response) => {
             let uri = URL.createObjectURL(response.data);
             setUri(uri);

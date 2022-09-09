@@ -1,6 +1,5 @@
 import {IllustInfo} from "../types/search";
 import Grid from "@mui/material/Grid";
-import {Stack} from "@mui/material";
 import Illustration from "./illustration";
 import * as React from "react";
 import {ReactElement, useEffect, useState} from "react";

@@ -1,6 +1,6 @@
 import {IllustInfo, SearchIllustResponse} from "../types/search";
 import {get} from "../ajax/ajax";
-import {IllustFullInfoResponse, Body} from "../types/illust";
+import {Body, IllustFullInfoResponse} from "../types/illust";
 
 export function searchIllust(keyword: string, page: number, callback: (infos: IllustInfo[]) => void) {
     get(`https://okabebot-pixiv.herokuapp.com/artworks/${keyword}?p=${page}`, (response: SearchIllustResponse) => {
